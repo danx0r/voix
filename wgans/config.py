@@ -45,7 +45,7 @@ phonemas_nus = ['t', 'y', 'l', 'k', 'aa', 'jh', 'ae', 'ng', 'ah', 'hh', 'z', 'ey
 num_phos = len(phonemas_nus)
 
 singers = ['ADIZ', 'JLEE', 'JTAN', 'KENN', 'MCUR', 'MPOL', 'MPUR', 'NJAT', 'PMAR', 'SAMF', 'VKOW' ,'ZHIY']
-# singers = ['ADIZ', 'MCUR']
+singers = ['MCUR']
 
 num_singers = len(singers)
 
