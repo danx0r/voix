@@ -100,7 +100,11 @@ def main():
 
             utils.progress(count,len(sing_wav_files))
 
-        read_wav_files=[x for x in os.listdir(read_dir) if x.endswith('.wav') and not x.startswith('.')]
+        try:
+            read_wav_files=[x for x in os.listdir(read_dir) if x.endswith('.wav') and not x.startswith('.')]
+        except:
+            read_wav_files=[]
+            print("no read wavs")
         print ("Processing reader %s" % singer)
         count = 0
 
