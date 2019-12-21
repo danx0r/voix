@@ -45,7 +45,7 @@ def main():
 
 
 #     singers = next(os.walk(config.wav_dir_nus))[1]
-    singers = config.singers
+    singers = config.singers_prep
 
     for singer in singers:
         sing_dir = config.wav_dir_nus+singer+'/sing/'
