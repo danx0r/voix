@@ -1,0 +1,3 @@
+[submodule "wgans/data/models"]
+	path = wgans/data/models
+	url = hub@eye0.com:wganss/data/models
