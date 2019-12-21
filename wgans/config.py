@@ -3,7 +3,7 @@ import tensorflow as tf
 
 
 wav_dir_nus = './data/training/nus-smc-corpus_48/'
-voice_dir = './data/prepped/voices/nus_48/'
+voice_dir = './data/voices/'
 log_dir = './data/models/'
 data_log = './log/data_log.log'
 stat_dir = './stats/'
@@ -19,7 +19,6 @@ feats_ext = '_synth_feats.npy'
 f0_weight = 10
 max_models_to_keep = 10
 f0_threshold = 1
-
 
 def get_teacher_prob(epoch):
     if epoch < 500:
