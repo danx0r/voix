@@ -1,11 +1,15 @@
 import models
 import tensorflow as tf
 import argparse
-import os, sys
+import os, sys, random
 import config
 import utils
 import numpy as np
 import mir_eval
+
+r = random.randint(1, 10000)
+print ("RANDSEED:", r)
+random.seed(r)
 
 def train(_):
     model = models.WGANSing()
@@ -55,10 +59,18 @@ if __name__ == '__main__':
                         eval_hdf5_file(file_name, singer_index)
         elif sys.argv[1] == '-f0':
             model = models.WGANSing()
-            f0 = [71] * 1000 + [66] * 1000
+            f0 = []
             pho = []
-            for i in range(len(f0)):
-                pho.append(int(i/10) % config.num_phos)
+            i = 0
+            while i < 2000:
+                hold = random.randint(4, 100)
+                p = random.randint(0, config.num_phos)
+                f = random.randint(60, 66)
+                for n in range(hold):
+                    f0.append(f)
+                    pho.append(p)
+                i += hold
+               
             model.eval_f0pho(f0, pho, "out", 4)
 
     print ("DONE")
