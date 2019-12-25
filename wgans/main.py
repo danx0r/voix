@@ -7,8 +7,7 @@ import utils
 import numpy as np
 import mir_eval
 
-r = random.randint(1, 10000)
-print ("RANDSEED:", r)
+r = 123 #random.randint(1, 10000)
 random.seed(r)
 
 def train(_):
@@ -63,7 +62,7 @@ if __name__ == '__main__':
             pho = []
             i = 0
             while i < 2000:
-                hold = random.randint(4, 100)
+                hold = random.randint(9, 100)
                 p = random.randint(0, config.num_phos)
                 f = random.randint(60, 66)
                 for n in range(hold):
@@ -73,4 +72,5 @@ if __name__ == '__main__':
                
             model.eval_f0pho(f0, pho, "out", 4)
 
-    print ("DONE")
+print ("RANDSEED:", r)
+print ("DONE")
