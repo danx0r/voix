@@ -55,8 +55,10 @@ if __name__ == '__main__':
                         eval_hdf5_file(file_name, singer_index)
         elif sys.argv[1] == '-f0':
             model = models.WGANSing()
-            f0 = [71] * 1100
-            pho = [4] * 1100
+            f0 = [71] * 1000 + [66] * 1000
+            pho = []
+            for i in range(len(f0)):
+                pho.append(int(i/10) % config.num_phos)
             model.eval_f0pho(f0, pho, "out", 4)
 
     print ("DONE")
