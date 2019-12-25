@@ -44,11 +44,13 @@ if __name__ == '__main__':
 6.292819 6.292819 sp
     """
 
-    sent = "Sil Sil Sil t w ih ng k ah sp t w ih ng k ah sp l ih t ow sp s t aa r sp Sil Sil Sil"
+    sent = "Sil Sil Sil t  w  ih ng k  ah sp t  w  ih ng k  ah sp l  ih t  ow sp s  t  aa aa r  sp Sil Sil Sil"
+    pitch =" 50 50  50  60 60 60 60 60 60 60 67 67 67 67 67 67 68 69 69 69 69 68 67 67 67 67 67 60 60  60  60"
     f0 = []
     pho = []
-    for p in sent.split():
-        q = config.phonemas_nus.index(p)
-        pho += [q] * 20
-        f0 += [57] * 20
-    f0pho_to_wav(f0, pho, "out", 3)
+    for ph, pi in zip(sent.split(), pitch.split()):
+        p = config.phonemas_nus.index(ph)
+        pho += [p] * 20
+        f0 += [int(pi)] * 20
+        
+    f0pho_to_wav(f0, pho, "out", 4)
