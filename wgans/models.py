@@ -325,8 +325,14 @@ class WGANSing(Model):
             feats = np.array(feat_file['feats'])[()]
 
             pho_target = np.array(feat_file["phonemes"])[()]
+            print ("DBG PHONEMES", pho_target.shape, pho_target)
+            for i in range(len(pho_target)):
+                pho_target[i] = int(i / 20) % config.num_phos
 
         f0 = feats[:,-2]
+        print ("DBG F0", f0.shape, f0)
+        for i in range(len(f0)):
+            f0[i] = 60.0 if i<800 else (70.0 if i > 1200 else 66.0)
 
         med = np.median(f0[f0 > 0])
 
