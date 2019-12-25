@@ -23,6 +23,6 @@ if __name__ == '__main__':
     for ph, pi in zip(sent.split(), pitch.split()):
         p = config.phonemas_nus.index(ph)
         pho += [p] * 20
-        f0 += [int(pi)-11] * 20
+        f0 += [int(pi)] * 20
         
-    f0pho_to_wav(f0, pho, "out", 3)
+    f0pho_to_wav(f0, pho, "out", 5)
