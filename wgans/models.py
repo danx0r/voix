@@ -332,7 +332,7 @@ class WGANSing(Model):
 
         f0 = feats[:,-2]
         for i in range(len(f0)):
-            f0[i] = 60.0
+            f0[i] = 71.0
         print ("DBG F0", f0.shape, f0)
 
         med = np.median(f0[f0 > 0])
@@ -355,12 +355,14 @@ class WGANSing(Model):
         feats, f0_nor, pho_target = self.read_hdf5_file(file_name)
 
         out_feats = self.process_file(f0_nor, pho_target, singer_index,  sess)
+        print ("DBG out_feats", out_feats.shape, out_feats)
 
         if plot:
             self.plot_features(feats, out_feats)
         
         out_featss = np.concatenate((out_feats[:feats.shape[0]], feats[:out_feats.shape[0],-2:]), axis = -1)
 
+        print ("DBG featss", out_featss.shape, out_featss)
         utils.feats_to_audio(out_featss,file_name[:-4]+'output') 
 
         if ground:
@@ -374,9 +376,14 @@ class WGANSing(Model):
         pho = np.array(pho)
         sess = tf.Session()
         self.load_model(sess, log_dir = config.log_dir)
-        out_feats = self.process_file(f0, pho, singer_index,  sess)
+        out_feats = self.process_file(f0/100, pho, singer_index,  sess)
 #         out_featss = np.concatenate((out_feats[:feats.shape[0]], feats[:out_feats.shape[0],-2:]), axis = -1)
-        utils.feats_to_audio(out_feats, outfn) 
+        out_featss = np.concatenate((out_feats[:len(f0)], np.zeros(shape=(len(f0), 2))), axis=-1) 
+        for i in range(len(f0)):
+            out_featss[i, -1] = 1.
+            out_featss[i, -2] = f0[i]
+        print ("DBG featss", out_featss.shape, out_featss)
+        utils.feats_to_audio(out_featss, outfn) 
 
     def plot_features(self, feats, out_feats):
 
