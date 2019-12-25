@@ -368,63 +368,17 @@ class WGANSing(Model):
         if ground:
             utils.feats_to_audio(feats,file_name[:-4]+'ground_truth') 
 
-    def read_hdf5_file2(self, file_name):
-        """
-        Function to read and process input file, given name and the synth_mode.
-        Returns features for the file based on mode (0 for hdf5 file, 1 for wav file).
-        Currently, only the HDF5 version is implemented.
-        """
-        # if file_name.endswith('.hdf5'):
-        stat_file = h5py.File(config.stat_dir+'stats.hdf5', mode='r')
-
-        max_feat = np.array(stat_file["feats_maximus"])
-        min_feat = np.array(stat_file["feats_minimus"])
-        stat_file.close()
-
-        with h5py.File(config.voice_dir + file_name) as feat_file:
-
-            feats = np.array(feat_file['feats'])[()]
-
-            pho_target = np.array(feat_file["phonemes"])[()]
-#             pho_target = pho_target[:1111]
-            for i in range(len(pho_target)):
-                pho_target[i] = 4
-        print ("DBG PHONEMES", pho_target.shape, pho_target)
-
-        f0 = feats[:,-2]
-        for i in range(len(f0)):
-            f0[i] = 71.0
-        print ("DBG F0", f0.shape, f0)
-
-        med = np.median(f0[f0 > 0])
-
-        f0[f0==0] = med
-
-        f0_nor = (f0 - min_feat[-2])/(max_feat[-2]-min_feat[-2])
-        print ("DBG f0_nor", f0_nor.shape, f0_nor, min_feat[-2], max_feat[-2])
-
-        return feats, f0_nor, pho_target
-
     def eval_f0pho(self, f0, pho, outfn, singer_index):
         """
         create .wav from f0 and phonemes.
         """
         sess = tf.Session()
         self.load_model(sess, log_dir = config.log_dir)
-#         feats, f0_nor, pho_target = self.read_hdf5_file2("nus_MCUR_sing_10.hdf5")
-        
-#         print ("DBG feats:", feats.shape, "\n", feats[:,-2:])
 
         f0 = np.array(f0)
         f0_nor = f0 / 100.
         out_feats = self.process_file(f0_nor, pho, singer_index,  sess)
-        print ("DBG out_feats", out_feats.shape, "\n", out_feats)
-
-#         print ("DBG last column", list(feats[:,-1]))
-#         out_featss = np.concatenate((out_feats[:len(f0)], feats[:len(f0),-2:]), axis = -1)
-        out_featss = np.c_[out_feats[:len(f0)], f0, np.full((len(f0),), 0.)]
-
-        print ("DBG featss", out_featss.shape, "\n", out_featss)
+        out_featss = np.c_[out_feats[:len(f0)], f0, np.full((len(f0),), 0.)]   #last 2 columns are key to the whole affair
         utils.feats_to_audio(out_featss, outfn) 
 
     def plot_features(self, feats, out_feats):
