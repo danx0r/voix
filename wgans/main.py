@@ -53,4 +53,10 @@ if __name__ == '__main__':
                         
                         print("Synthesizing second singer.")
                         eval_hdf5_file(file_name, singer_index)
+        elif sys.argv[1] == '-f0':
+            model = models.WGANSing()
+            f0 = [66] * 1000
+            pho = [4] * 1000
+            model.eval_f0pho(f0, pho, "out", 4)
+
     print ("DONE")

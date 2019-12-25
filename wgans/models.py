@@ -369,6 +369,16 @@ class WGANSing(Model):
         if ground:
             utils.feats_to_audio(feats,file_name[:-4]+'ground_truth') 
 
+    def eval_f0pho(self, f0, pho, outfn, singer_index):
+        """
+        create .wav from f0 and phonemes.
+        """
+        sess = tf.Session()
+        self.load_model(sess, log_dir = config.log_dir)
+        out_feats = self.process_file(f0, pho, singer_index,  sess)
+#         out_featss = np.concatenate((out_feats[:feats.shape[0]], feats[:out_feats.shape[0],-2:]), axis = -1)
+        utils.feats_to_audio(out_feats, outfn) 
+
     def plot_features(self, feats, out_feats):
 
         plt.figure(1)
