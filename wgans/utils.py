@@ -347,7 +347,7 @@ def hertz_to_new_base(f0):
 def new_base_to_hertz(f0):
     return 2**(f0*10)/1200
 
-def feats_to_audio(in_feats,filename, fs=config.fs,  mode=config.comp_mode):
+def feats_to_audio(in_feats,filename, fs=config.fs,  mode=config.comp_mode, val_dir=None):
     harm = in_feats[:,:60]
     ap = in_feats[:,60:-2]
     f0 = in_feats[:,-2:]
@@ -371,8 +371,10 @@ def feats_to_audio(in_feats,filename, fs=config.fs,  mode=config.comp_mode):
     harm = 10**(harm/10)
     ap = 10**(ap/20)
 
+    if not val_dir:
+        val_dir = config.val_dir
     y=pw.synthesize(f0.astype('double'),harm.astype('double'),ap.astype('double'),fs,config.hoptime)
-    sf.write(config.val_dir+filename+'.wav',y,fs)
+    sf.write(val_dir+filename+'.wav',y,fs)
 
 def feats_to_audio_test(in_feats,filename, fs=config.fs,  mode=config.comp_mode):
     harm = in_feats[:,:60]

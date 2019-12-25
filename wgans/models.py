@@ -379,7 +379,7 @@ class WGANSing(Model):
         f0_nor = f0 / 100.
         out_feats = self.process_file(f0_nor, pho, singer_index,  sess)
         out_featss = np.c_[out_feats[:len(f0)], f0, np.full((len(f0),), 0.)]   #last 2 columns are key to the whole affair
-        utils.feats_to_audio(out_featss, outfn) 
+        utils.feats_to_audio(out_featss, outfn, val_dir="") 
 
     def plot_features(self, feats, out_feats):
 
