@@ -411,11 +411,13 @@ class WGANSing(Model):
         """
         sess = tf.Session()
         self.load_model(sess, log_dir = config.log_dir)
-        feats, f0_nor, pho_target = self.read_hdf5_file2("nus_MCUR_sing_10.hdf5")
+#         feats, f0_nor, pho_target = self.read_hdf5_file2("nus_MCUR_sing_10.hdf5")
         
-        print ("DBG feats:", feats.shape, "\n", feats[:,-2:])
+#         print ("DBG feats:", feats.shape, "\n", feats[:,-2:])
 
-        out_feats = self.process_file(f0_nor, pho_target, singer_index,  sess)
+        f0 = np.array(f0)
+        f0_nor = f0 / 100.
+        out_feats = self.process_file(f0_nor, pho, singer_index,  sess)
         print ("DBG out_feats", out_feats.shape, "\n", out_feats)
 
 #         print ("DBG last column", list(feats[:,-1]))
