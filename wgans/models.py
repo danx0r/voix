@@ -327,14 +327,12 @@ class WGANSing(Model):
             pho_target = np.array(feat_file["phonemes"])[()]
 #             pho_target = pho_target[:1111]
             for i in range(len(pho_target)):
-                pho_target[i] = int(i / 20) % config.num_phos
-        pho_target = np.concatenate([pho_target,pho_target])
+                pho_target[i] = 4
         print ("DBG PHONEMES", pho_target.shape, pho_target)
 
         f0 = feats[:,-2]
         for i in range(len(f0)):
-            f0[i] = 60.0 if i<800 else (70.0 if i > 1200 else 66.0)
-        f0 = np.concatenate([f0,f0])
+            f0[i] = 60.0
         print ("DBG F0", f0.shape, f0)
 
         med = np.median(f0[f0 > 0])
@@ -342,9 +340,8 @@ class WGANSing(Model):
         f0[f0==0] = med
 
         f0_nor = (f0 - min_feat[-2])/(max_feat[-2]-min_feat[-2])
+        print ("DBG f0_nor", f0_nor.shape, f0_nor, min_feat[-2], max_feat[-2])
 
-
-        feats = np.concatenate([feats,feats])
         return feats, f0_nor, pho_target
 
 
@@ -373,6 +370,8 @@ class WGANSing(Model):
         """
         create .wav from f0 and phonemes.
         """
+        f0 = np.array(f0)
+        pho = np.array(pho)
         sess = tf.Session()
         self.load_model(sess, log_dir = config.log_dir)
         out_feats = self.process_file(f0, pho, singer_index,  sess)
