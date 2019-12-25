@@ -371,7 +371,7 @@ def feats_to_audio(in_feats,filename, fs=config.fs,  mode=config.comp_mode, val_
     harm = 10**(harm/10)
     ap = 10**(ap/20)
 
-    if not val_dir:
+    if val_dir==None:
         val_dir = config.val_dir
     y=pw.synthesize(f0.astype('double'),harm.astype('double'),ap.astype('double'),fs,config.hoptime)
     sf.write(val_dir+filename+'.wav',y,fs)

@@ -19,7 +19,7 @@ if __name__ == '__main__':
     f0 = []
     pho = []
     i = 0
-    f=60
+    f=50
     while i < 2000:
         hold = random.randint(1, 80)
         p = random.randint(0, config.num_phos)
