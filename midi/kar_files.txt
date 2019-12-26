@@ -22,3 +22,5 @@ The rest of the second track contains the words of the song. Each event is the s
  <meta message text text=' bar' time=66>,
  <meta message text text='ber' time=120>,
 
+'time' is ticks since last event
+looks like 192 ticks per quarternote
