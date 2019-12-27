@@ -24,3 +24,33 @@ The rest of the second track contains the words of the song. Each event is the s
 
 'time' is ticks since last event
 looks like 192 ticks per quarternote
+
+* PITCH BEND SENSITIVITY:
+
+For example, if you want to change the "pitch bend sensitivity" you would send the following control change messages:
+101 0
+100 0
+  6 2
+ 38 0
+
+The 101 and 100 messages indicate what parameter is to be changed. The 0 after each one comes from the parameter list above.
+Changing only the 0 next to control change 100 to 1 would select "master fine tuning" as indicated in the parameter list above.
+Then comes the 6 and 38 messages, which indicate what to do with the parameter pointed to by the 101 and 100 messages. In this
+example we are changing the "pitch bend sensitivity", we are setting it to 2 (which is actually the default value). Note that
+if the value next to control change 38 is 0, then you can safely omit the message - however I would recommend always including
+it for completeness.
+
+Pitch bend sensitivity is how much the currently sounding note(s), in the current MIDI channel, is/are affected by pitch bend.
+The default value of 2 means that the maximum pitch bend will result in a pitch change of two semitones. (Above and below the
+sounding note, meaning a total of four semitones from lowest to hightest pitch bend positions.)
+
+The maximum sensitivity is twenty-four semitones (two octaves above and two below).
+~~~~~~~~~~~~~~~~~~
+The coarse adjustment (usually set via Data Entry 6) sets the range in semitones. The fine adjustment (usually set via Data Entry 38) s
+et the range in cents. For example, to adjust the pitch wheel range to go up/down 2 semitones and 4 cents:
+
+B0 65 00  Controller/chan 0, RPN coarse (101), Pitch Bend Range
+B0 64 00  Controller/chan 0, RPN fine (100), Pitch Bend Range
+B0 06 02  Controller/chan 0, Data Entry coarse, +/- 2 semitones
+B0 26 04  Controller/chan 0, Data Entry fine, +/- 4 cents
+

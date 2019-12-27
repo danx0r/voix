@@ -24,9 +24,12 @@ def parse_karaoke_file(fmido, mname='Melody'):
     print ("Pitch track:", melody)
     tick = 0
     for syl in lyrics[:25]:
+        # print (syl)
+        # continue
+        if hasattr(syl, 'time'):
+            tick += syl.time
         if syl.type == "text":
             # print ("DEBUG", syl)
-            tick += syl.time
             tx = syl.text
             if tx[0:1] == '@':
                 print ("INFO:", tx)
@@ -41,16 +44,24 @@ def parse_karaoke_file(fmido, mname='Melody'):
                 if tx[-1] == ' ':
                     print ("-------------------------------")
 
-    # for syl in lyrics[:22]:
-    #     if syl.type == "text":
-    #         tick += syl.time
-    #         tx = syl.text
-    #         if tx[0:1] == '@':
-    #             print ("INFO:", tx)
-    #         else:
-    #             if tx[0] in [' ', '/', '\\']:
-    #                 print ("--------WORD BOUNDARY--------")
-    #             print ("TIME:", tick, "SYLLABLE:", tx)
+    tick = 0
+    pwsen = 0
+    for ev in melody[:65]:
+        # print (ev)
+        # continue
+        if hasattr(ev, 'time'):
+            tick += ev.time
+
+        if ev.type == "control_change" and ev.control == 101:
+            pwsen = (pwsen & 0x7f) + (ev.value << 7)
+            print("PWSEN:", hex(pwsen))
+        if ev.type == "control_change" and ev.control == 100:
+            pwsen = (pwsen & 0x3f80) + ev.value
+            print("PWSEN:", hex(pwsen))
+        if ev.type == "note_on" and ev.velocity > 0:
+            print ("ON", tick, ev)
+        if ev.type == "pitchwheel":
+            print ("PITCH", tick, ev)
 
 
 if __name__ == '__main__':
