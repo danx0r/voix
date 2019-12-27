@@ -15,16 +15,19 @@ def parse_karaoke_file(fmido):
         return
 
     tick = 0
-    for syl in lyrics[:22]:
+    for syl in lyrics[:25]:
         if syl.type == "text":
+            # print ("DEBUG", syl)
             tick += syl.time
             tx = syl.text
             if tx[0:1] == '@':
                 print ("INFO:", tx)
             else:
                 if tx[0] in [' ', '/', '\\']:
-                    print ("--------WORD BOUNDARY--------")
+                    print ("-------------------------------")
                 print ("TIME:", tick, "SYLLABLE:", tx)
+                if tx[-1] == ' ':
+                    print ("-------------------------------")
 
     # for syl in lyrics[:22]:
     #     if syl.type == "text":
