@@ -20,6 +20,7 @@ def parse_karaoke_file(fmido, mname='Melody'):
         for x in fmido.tracks:
             print (x.name)
         return
+
     print ("Pitch track:", melody)
     tick = 0
     for syl in lyrics[:25]:
@@ -32,7 +33,11 @@ def parse_karaoke_file(fmido, mname='Melody'):
             else:
                 if tx[0] in [' ', '/', '\\']:
                     print ("-------------------------------")
-                print ("TIME:", tick, "SYLLABLE:", tx)
+                clean = ""
+                for c in tx:
+                    if c.isalpha():
+                        clean += c.lower()
+                print ("TIME:", tick, "SYLLABLE:", clean)
                 if tx[-1] == ' ':
                     print ("-------------------------------")
 
