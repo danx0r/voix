@@ -46,7 +46,7 @@ def parse_karaoke_file(fmido, mname='Melody'):
     print ("======================================================")
     tick = 0
     pwsen = 0
-    pitch = 60
+    note = pitch = 60
     pw = 0
 
     for ev in melody[:65]:
@@ -62,10 +62,13 @@ def parse_karaoke_file(fmido, mname='Melody'):
             pwsen = (pwsen & 0x3f80) + ev.value
             print("TIME:", tick, "PWSEN:", hex(pwsen))
         if ev.type == "note_on" and ev.velocity > 0:
-            print ("TIME:", tick, "ON", ev)
+            note = ev.note
+            pitch = note + pw
+            print ("TIME:", tick, "NOTE ", pitch, ev)
         if ev.type == "pitchwheel":
             pw = (ev.pitch / 0x3fff) * (pwsen / 0x3fff) * 48
-            print ("TIME:", tick, "PITCH", pw, ev)
+            pitch = note + pw
+            print ("TIME:", tick, "PITCH", pitch, ev)
 
 
 if __name__ == '__main__':
