@@ -1,6 +1,11 @@
 import sys, argparse
 import mido
 
+def process_word(syls):
+    if syls:
+        print("           WORD:", "".join(syls))
+        print("-------------------------------")
+
 def parse_karaoke_file(fmido, mname='Melody'):
     is_kar = False
     melody = None
@@ -23,6 +28,7 @@ def parse_karaoke_file(fmido, mname='Melody'):
 
     print ("Pitch track:", melody)
     tick = 0
+    syls = []
     for syl in lyrics[:25]:
         # print (syl)
         # continue
@@ -39,17 +45,22 @@ def parse_karaoke_file(fmido, mname='Melody'):
                     if c.isalpha() or c == "'":
                         clean += c.lower()
                 if tx[0] in [' ', '/', '\\']:
-                    print ("-------------------------------")
+                    process_word(syls)
+                    syls = []
                 print ("TIME:", tick, "SYLLABLE:", clean)
+                syls.append(clean)
                 if tx[-1] == ' ':
-                    print ("-------------------------------")
+                    process_word(syls)
+                    syls = []
+    process_word(syls)
+
     print ("======================================================")
     tick = 0
     pwsen = 0
     note = pitch = 60
     pw = 0
 
-    for ev in melody[:65]:
+    for ev in melody[:0]:
         # print (ev)
         # continue
         if hasattr(ev, 'time'):
