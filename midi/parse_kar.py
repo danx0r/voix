@@ -26,6 +26,17 @@ def parse_karaoke_file(fmido):
                     print ("--------WORD BOUNDARY--------")
                 print ("TIME:", tick, "SYLLABLE:", tx)
 
+    for syl in lyrics[:22]:
+        if syl.type == "text":
+            tick += syl.time
+            tx = syl.text
+            if tx[0:1] == '@':
+                print ("INFO:", tx)
+            else:
+                if tx[0] in [' ', '/', '\\']:
+                    print ("--------WORD BOUNDARY--------")
+                print ("TIME:", tick, "SYLLABLE:", tx)
+
 
 if __name__ == '__main__':
     f=mido.MidiFile(sys.argv[1])
