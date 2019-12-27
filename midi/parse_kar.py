@@ -34,12 +34,12 @@ def parse_karaoke_file(fmido, mname='Melody'):
             if tx[0:1] == '@':
                 print ("INFO:", tx)
             else:
-                if tx[0] in [' ', '/', '\\']:
-                    print ("-------------------------------")
                 clean = ""
                 for c in tx:
-                    if c.isalpha():
+                    if c.isalpha() or c == "'":
                         clean += c.lower()
+                if tx[0] in [' ', '/', '\\']:
+                    print ("-------------------------------")
                 print ("TIME:", tick, "SYLLABLE:", clean)
                 if tx[-1] == ' ':
                     print ("-------------------------------")
