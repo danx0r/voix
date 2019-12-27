@@ -1,9 +1,10 @@
 import sys, argparse
 import mido
 
-def process_word(syls):
+def process_word(syls, end):
     if syls:
-        print("           WORD:", "".join(syls))
+        beg = syls[0][1]
+        print("TIME:", syls[0][1], "WORD:", "".join([x[0] for x in syls]), "LENGTH:", end-beg)
         print("-------------------------------")
 
 def parse_karaoke_file(fmido, mname='Melody'):
@@ -45,14 +46,14 @@ def parse_karaoke_file(fmido, mname='Melody'):
                     if c.isalpha() or c == "'":
                         clean += c.lower()
                 if tx[0] in [' ', '/', '\\']:
-                    process_word(syls)
+                    process_word(syls, tick)
                     syls = []
                 print ("TIME:", tick, "SYLLABLE:", clean)
-                syls.append(clean)
+                syls.append((clean, tick))
                 if tx[-1] == ' ':
-                    process_word(syls)
+                    process_word(syls, tick)
                     syls = []
-    process_word(syls)
+    process_word(syls, tick)
 
     print ("======================================================")
     tick = 0
