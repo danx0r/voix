@@ -38,6 +38,8 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='0'):
     tick = 0
     syls = []
     words = []
+    thi = 0
+    prothe = "the" if thee[0]=='0' else "thee"
     for syl in lyrics[:limit]:
         # print (syl)
         # continue
@@ -57,8 +59,13 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='0'):
                     words.append(process_word(syls, tick))
                     syls = []
                 if clean == "the":
-                    if thee == '1':
-                        clean = "thee"
+                    clean = prothe
+                    thi += 1
+                    if thi < len(thee):
+                        if thee[thi] == '0':
+                            prothe = "the"
+                        else:
+                            prothe = "thee"
                 print ("TIME:", tick, "SYLLABLE:", clean)
                 syls.append((clean, tick))
                 if tx[-1] == ' ':
@@ -102,8 +109,9 @@ if __name__ == '__main__':
     par = argparse.ArgumentParser(description="parse Karaoke-style MIDI file for melody & lyrics")
     par.add_argument("midifile")
     par.add_argument("--pitchtrack", default="Melody")
+    par.add_argument("--thee", type=str, default="0")
     par.add_argument("--limit", type=int, default=9999999)
     args = par.parse_args()
     f=mido.MidiFile(args.midifile)
-    pho, f0 = parse_karaoke_file(f, args.pitchtrack, args.limit)
+    pho, f0 = parse_karaoke_file(f, args.pitchtrack, args.limit, args.thee)
     print(pho[:22])
