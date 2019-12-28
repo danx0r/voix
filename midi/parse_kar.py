@@ -6,8 +6,14 @@ from wordstuff.utils import words2phonemes
 
 def process_word(syls, end):
     if syls:
+        word = "".join([x[0] for x in syls])
         beg = syls[0][1]
-        print("TIME:", syls[0][1], "WORD:", "".join([x[0] for x in syls]), "LENGTH:", end-beg)
+        print("TIME:", beg, "WORD:", word, "LENGTH:", end-beg)
+        sylphs = words2phonemes(word)
+        print (len(syls), len(sylphs))
+        if len(syls) != len(sylphs):
+            print ("ERROR")
+            0/0
         print("-------------------------------")
 
 def parse_karaoke_file(fmido, mname='Melody'):
