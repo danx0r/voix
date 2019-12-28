@@ -3,6 +3,7 @@ mypath = os.path.abspath(__file__)
 mypath = mypath[:mypath.rfind("/")+1]
 # print ("MYPATH:", mypath)
 
+
 def load_pronunciation_dict():
     f=open(mypath+"cmudict-0.7b", 'rb')
     d = {}
@@ -16,22 +17,31 @@ def load_pronunciation_dict():
     return d
 
 def words2phonemes(word):
-    pro = pdict.get(args.word)
+    pro = pdict.get(word)
     if pro == None:
-        return word, 1
-    syls = 0
+        return
+
+    syls = []
     phos = []
+    vowel = False
     for pho in pro.split():
         if pho[-1].isnumeric():
-            syls += 1
+            if vowel:
+                syls.append(phos)
+                phos = []
+            else:
+                vowel = True
             pho = pho[:-1]
         phos.append(pho)
-    return phos, syls
+    if phos:
+        syls.append(phos)
+    return syls
 
 pdict = load_pronunciation_dict()
 
 if __name__ == '__main__':
     par = argparse.ArgumentParser(description="test cmu dict")
-    par.add_argument("word")
+    par.add_argument("words")
     args = par.parse_args()
-    print ("PRO:", words2phonemes(args.word))
+    for word in args.words.split():
+        print ("PRO:", words2phonemes(word))

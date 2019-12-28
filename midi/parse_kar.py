@@ -2,7 +2,7 @@ import sys, os, argparse
 import mido
 if __name__ == '__main__':
     sys.path.append("..")
-from wordstuff import words2phonemes
+from wordstuff.utils import words2phonemes
 
 def process_word(syls, end):
     if syls:
@@ -92,8 +92,6 @@ if __name__ == '__main__':
     par.add_argument("midifile")
     par.add_argument("--pitchtrack", default="Melody")
     args = par.parse_args()
-
-    pdict = load_pronunciation_dict()
-    print ("PRO:", pdict.get("methodically"))
+    print ("W2PRO:", words2phonemes("methodically"))
     f=mido.MidiFile(args.midifile)
     parse_karaoke_file(f, args.pitchtrack)
