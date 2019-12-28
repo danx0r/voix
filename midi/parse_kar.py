@@ -1,5 +1,8 @@
-import sys, argparse
+import sys, os, argparse
 import mido
+if __name__ == '__main__':
+    sys.path.append("..")
+from pronunciation.cmu import load_pronunciation_dict
 
 def process_word(syls, end):
     if syls:
@@ -84,18 +87,6 @@ def parse_karaoke_file(fmido, mname='Melody'):
             pitch = note + pw
             print ("TIME:", tick, "PITCH", pitch, ev)
 
-def load_pronunciation_dict():
-    f=open("cmudict-0.7b", 'rb')
-    d = {}
-    for r in f.readlines(): #[:155]:
-        r = r.strip().decode('latin').lower()                       #showing your age
-        if r[0].isalnum() and '.' not in r and "(" not in r:
-            word, pro = r.split("  ")
-            # print (word, "|", pro)
-            d[word] = pro
-    print ("Downloaded", len(d), "pronunciations")
-    return d
-
 if __name__ == '__main__':
     par = argparse.ArgumentParser(description="parse Karaoke-style MIDI file for melody & lyrics")
     par.add_argument("midifile")
@@ -104,6 +95,5 @@ if __name__ == '__main__':
 
     pdict = load_pronunciation_dict()
     print ("PRO:", pdict.get("methodically"))
-    exit()
     f=mido.MidiFile(args.midifile)
     parse_karaoke_file(f, args.pitchtrack)
