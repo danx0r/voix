@@ -15,10 +15,23 @@ def load_pronunciation_dict():
     print ("Downloaded", len(d), "pronunciations")
     return d
 
+def words2phonemes(word):
+    pro = pdict.get(args.word)
+    if pro == None:
+        return word, 1
+    syls = 0
+    phos = []
+    for pho in pro.split():
+        if pho[-1].isnumeric():
+            syls += 1
+            pho = pho[:-1]
+        phos.append(pho)
+    return phos, syls
+
+pdict = load_pronunciation_dict()
+
 if __name__ == '__main__':
     par = argparse.ArgumentParser(description="test cmu dict")
     par.add_argument("word")
     args = par.parse_args()
-
-    pdict = load_pronunciation_dict()
-    print ("PRO:", pdict.get(args.word))
+    print ("PRO:", words2phonemes(args.word))

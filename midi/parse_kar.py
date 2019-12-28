@@ -2,7 +2,7 @@ import sys, os, argparse
 import mido
 if __name__ == '__main__':
     sys.path.append("..")
-from pronunciation.cmu import load_pronunciation_dict
+from wordstuff import words2phonemes
 
 def process_word(syls, end):
     if syls:
