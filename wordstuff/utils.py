@@ -24,6 +24,7 @@ def words2phonemes(word, exvowels = ""):
     pros = pdict.get(word)
     if pros == None:
         return
+    pros.reverse()
     ret = []
     for pro in pros:
         syls = []

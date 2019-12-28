@@ -37,7 +37,7 @@ def parse_karaoke_file(fmido, mname='Melody'):
     tick = 0
     syls = []
     words = []
-    for syl in lyrics: #[:25]:
+    for syl in lyrics[:11]:
         # print (syl)
         # continue
         if hasattr(syl, 'time'):

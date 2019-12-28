@@ -27,14 +27,14 @@ if __name__ == '__main__':
     
     f=mido.MidiFile(args.midifile)
     words, pitches = parse_karaoke_file(f, args.pitchtrack)
-    pho = ["Sil", "Sil", "Sil", ]
-    f0 = [67, 67, 67, ]
+    pho = ["Sil"] * 50
+    f0 = [67] * 50
     for word in words[:33]:
         if not word:
             continue
         for syl in word:
             for ph in syl:
-                z = 30 if ph in config.phonemas_nus_vowels else 15
+                z = 36 if ph in config.phonemas_nus_vowels else 12
                 for i in range(z):
                     pho.append(ph)
                     f0.append(67)
