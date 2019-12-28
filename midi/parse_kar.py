@@ -11,7 +11,8 @@ def process_word(syls, tick):
     syls = [x[0] for x in syls]
     phos = syllables2phonemes(syls)
     print ("-----------------------------------------------WORD:", "".join(syls), "PHONEMES:", phos)
-
+    return phos
+    
 def parse_karaoke_file(fmido, mname='Melody'):
     is_kar = False
     melody = None
@@ -35,6 +36,7 @@ def parse_karaoke_file(fmido, mname='Melody'):
     print ("Pitch track:", melody)
     tick = 0
     syls = []
+    words = []
     for syl in lyrics: #[:25]:
         # print (syl)
         # continue
@@ -51,14 +53,14 @@ def parse_karaoke_file(fmido, mname='Melody'):
                     if c.isalpha() or c == "'":
                         clean += c.lower()
                 if tx[0] in [' ', '/', '\\']:
-                    process_word(syls, tick)
+                    words.append(process_word(syls, tick))
                     syls = []
                 print ("TIME:", tick, "SYLLABLE:", clean)
                 syls.append((clean, tick))
                 if tx[-1] == ' ':
-                    process_word(syls, tick)
+                    words.append(process_word(syls, tick))
                     syls = []
-    process_word(syls, tick)
+    words.append(process_word(syls, tick))
 
     print ("======================================================")
     tick = 0
@@ -66,6 +68,7 @@ def parse_karaoke_file(fmido, mname='Melody'):
     note = pitch = 60
     pw = 0
 
+    pitches = []
     for ev in melody[:0]:
         # print (ev)
         # continue
@@ -89,10 +92,13 @@ def parse_karaoke_file(fmido, mname='Melody'):
             pitch = note + pw
             print ("TIME:", tick, "PITCH", pitch, ev)
 
+    return words, pitches
+            
 if __name__ == '__main__':
     par = argparse.ArgumentParser(description="parse Karaoke-style MIDI file for melody & lyrics")
     par.add_argument("midifile")
     par.add_argument("--pitchtrack", default="Melody")
     args = par.parse_args()
     f=mido.MidiFile(args.midifile)
-    parse_karaoke_file(f, args.pitchtrack)
+    pho, f0 = parse_karaoke_file(f, args.pitchtrack)
+    print(pho[:22])
