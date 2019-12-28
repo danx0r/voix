@@ -3,6 +3,7 @@ import mido
 if __name__ == '__main__':
     sys.path.append("..")
 from wordstuff.utils import syllables2phonemes
+from wgans.config import phonemas_nus_vowels as vowels
 
 def process_word(syls, tick):
 #     print ("DEBUG process_word", syls)
@@ -14,7 +15,7 @@ def process_word(syls, tick):
     print ("-----------------------------------------------WORD:", "".join(syls), "PHONEMES:", phos)
     return phos
     
-def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='0'):
+def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
     is_kar = False
     melody = None
     for t in fmido.tracks:
@@ -58,7 +59,7 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='0'):
                 if tx[0] in [' ', '/', '\\']:
                     words.append(process_word(syls, tick))
                     syls = []
-                if clean == "the":
+                if clean == "the" and thee != "auto":
                     clean = prothe
                     thi += 1
                     if thi < len(thee):
@@ -72,6 +73,13 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='0'):
                     words.append(process_word(syls, tick))
                     syls = []
     words.append(process_word(syls, tick))
+    
+    if thee == "auto":
+        for i in range(len(words)-1):
+            if words[i] == [['dh', 'ah']]:
+                if words[i+1][0][0] in vowels:
+                    print ("DEBUG the --> thee", i)
+                    words[i][0][1] = 'iy'
 
     print ("======================================================")
     tick = 0
