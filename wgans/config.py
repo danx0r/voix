@@ -42,6 +42,8 @@ output_features = 64
 
 phonemas_nus = ['t', 'y', 'l', 'k', 'aa', 'jh', 'ae', 'ng', 'ah', 'hh', 'z', 'ey', 'f', 'uw', 'iy', 'ay', 'b', 's', 'd', 'Sil', 'p', 'n', 'sh', 'ao', 'g', 'ch', 'ih', 'eh', 'aw', 'sp', 'oy', 'th', 'w', 'ow', 'v', 'uh', 'm', 'er', 'zh', 'r', 'dh', 'ax']
 
+phonemas_nus_vowels = ['aa', 'ae', 'ah', 'ey', 'uw', 'iy', 'ay', 'ao', 'ih', 'eh', 'aw', 'oy', 'ow', 'uh', 'er']
+
 num_phos = len(phonemas_nus)
 
 singers = ['ADIZ', 'JLEE', 'JTAN', 'KENN', 'MCUR', 'MPOL', 'MPUR', 'NJAT', 'PMAR', 'SAMF', 'VKOW' ,'ZHIY']
