@@ -5,6 +5,7 @@ if __name__ == '__main__':
 from wordstuff.utils import syllables2phonemes
 
 def process_word(syls, tick):
+#     print ("DEBUG process_word", syls)
     if len(syls) == 0:
         print ("---WARN: zero-length word encountered---")
         return
@@ -37,7 +38,7 @@ def parse_karaoke_file(fmido, mname='Melody'):
     tick = 0
     syls = []
     words = []
-    for syl in lyrics[:11]:
+    for syl in lyrics: #[:11]:
         # print (syl)
         # continue
         if hasattr(syl, 'time'):

@@ -16,7 +16,10 @@ def load_pronunciation_dict():
             if i > 0:
                 word = word[:i]
             # print (word, "|", pro)
-            d[word].append(pro)
+            if word in ["the"]:
+                d[word].insert(0, pro)
+            else:
+                d[word].append(pro)
     print ("Downloaded", len(d), "pronunciations")
     return d
 
@@ -24,7 +27,6 @@ def words2phonemes(word, exvowels = ""):
     pros = pdict.get(word)
     if pros == None:
         return
-    pros.reverse()
     ret = []
     for pro in pros:
         syls = []
@@ -112,6 +114,7 @@ def syllables2phonemes(syls):
     if not best:
         print("ERROR -- %s no pronunciation matches syllable count" % word)
 
+#     print ("DEBUG s2p returns:", best)
     return best
 
 pdict = load_pronunciation_dict()
@@ -120,7 +123,7 @@ if __name__ == '__main__':
     # par = argparse.ArgumentParser(description="test cmu dict")
     # par.add_argument("words")
     # args = par.parse_args()
-    tests = (['is'], ['ev', 'ery'], ['fi', 're', 'man'], ['hour', 'glass'], ['never'])
+    tests = (['of'], ['ev', 'ery'], ['fi', 're', 'man'], ['hour', 'glass'], ['never'])
     for x in tests:
         print ("TEST:", x)
         print (syllables2phonemes(x))
