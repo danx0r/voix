@@ -9,17 +9,57 @@ def process_word(syls, end):
         word = "".join([x[0] for x in syls])
         beg = syls[0][1]
         pros = words2phonemes(word)
+        if not pros:
+            word = word.replace("'", "")
+            pros = words2phonemes(word)
+        if not pros:
+            print ("WARNING -- %s no pronunciation in dictionary" % word)
+            return None
+
         best = None
-        for pro in pros:
-            if len(syls) == len(pro):
-                best = pro
+        for ex in ["", 'r', 'y', 'w' 'ry', 'yw', 'rw', 'ryw']:
+            if ex:
+                pros = words2phonemes(word, exvowels=ex)
+                print("TRYING as vowels:", pros[0], ex)
+            for pro in pros:
+                if pro is not pros[0]:
+                    print ("TRYING alternate pronunciation:", pro)
+                if len(syls) == len(pro):
+                    best = pro
+                    print ("MATCH:", best)
+                    break
+            if best:
                 break
-            else:
-                print ("TRYING...", pro)
+
         if not best:
-            print ("ERROR -- no pronunciation matches syllable count")
-            0/0
-        print("TIME:", beg, "WORD:", word, "LENGTH:", end-beg, "PRO:", best)
+            print ("TRYING to break up the word:")
+            for i in range(1, len(word)-1):
+                w1 = word[:i]
+                w2 = word[i:]
+                print("  TRYING:", w1, w2)
+                p1 = words2phonemes(w1)
+                p2 = words2phonemes(w2)
+                if p1 and p2:
+                    for q in p1:
+                        for r in p2:
+                            poss = q + r
+                            print("  TRYING:", poss)
+                            if len(poss) == len(syls):
+                                best = poss
+                                break
+                        if best:
+                            break
+                    if best:
+                        break
+                if best:
+                    break
+            if best:
+                print ("  SUCCESS!", best)
+
+            if not best:
+                print("ERROR -- %s no pronunciation matches syllable count" % word)
+                return None
+        print("TIME:", beg, "WORD:", word, "SYLS:", len(syls), "LENGTH:", end-beg, "PRO:", best)
         print("-------------------------------")
 
 def parse_karaoke_file(fmido, mname='Melody'):
@@ -45,7 +85,7 @@ def parse_karaoke_file(fmido, mname='Melody'):
     print ("Pitch track:", melody)
     tick = 0
     syls = []
-    for syl in lyrics[:25]:
+    for syl in lyrics: #[:25]:
         # print (syl)
         # continue
         if hasattr(syl, 'time'):

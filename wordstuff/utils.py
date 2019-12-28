@@ -20,7 +20,7 @@ def load_pronunciation_dict():
     print ("Downloaded", len(d), "pronunciations")
     return d
 
-def words2phonemes(word):
+def words2phonemes(word, exvowels = ""):
     pros = pdict.get(word)
     if pros == None:
         return
@@ -30,13 +30,14 @@ def words2phonemes(word):
         phos = []
         vowel = False
         for pho in pro.split():
-            if pho[-1].isnumeric():
+            if pho[-1].isnumeric() or pho in exvowels:
                 if vowel:
                     syls.append(phos)
                     phos = []
                 else:
                     vowel = True
-                pho = pho[:-1]
+                if pho[-1].isnumeric():
+                    pho = pho[:-1]
             phos.append(pho)
         if phos:
             syls.append(phos)
