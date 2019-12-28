@@ -14,7 +14,7 @@ def process_word(syls, tick):
     print ("-----------------------------------------------WORD:", "".join(syls), "PHONEMES:", phos)
     return phos
     
-def parse_karaoke_file(fmido, mname='Melody'):
+def parse_karaoke_file(fmido, mname='Melody', limit=9999999):
     is_kar = False
     melody = None
     for t in fmido.tracks:
@@ -38,7 +38,7 @@ def parse_karaoke_file(fmido, mname='Melody'):
     tick = 0
     syls = []
     words = []
-    for syl in lyrics: #[:11]:
+    for syl in lyrics[:limit]:
         # print (syl)
         # continue
         if hasattr(syl, 'time'):
@@ -99,7 +99,8 @@ if __name__ == '__main__':
     par = argparse.ArgumentParser(description="parse Karaoke-style MIDI file for melody & lyrics")
     par.add_argument("midifile")
     par.add_argument("--pitchtrack", default="Melody")
+    par.add_argument("--limit", type=int, default=9999999)
     args = par.parse_args()
     f=mido.MidiFile(args.midifile)
-    pho, f0 = parse_karaoke_file(f, args.pitchtrack)
+    pho, f0 = parse_karaoke_file(f, args.pitchtrack, args.limit)
     print(pho[:22])

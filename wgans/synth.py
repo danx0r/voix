@@ -19,17 +19,17 @@ if __name__ == '__main__':
     par = argparse.ArgumentParser(description="parse Karaoke-style MIDI file for melody & lyrics")
     par.add_argument("midifile")
     par.add_argument("--pitchtrack", default="Melody")
-    par.add_argument("--limit", default=9999999)
+    par.add_argument("--limit", type=int, default=9999999)
     args = par.parse_args()
 
     sent = []
     pitch = []
     
     f=mido.MidiFile(args.midifile)
-    words, pitches = parse_karaoke_file(f, args.pitchtrack)
+    words, pitches = parse_karaoke_file(f, args.pitchtrack, args.limit)
     pho = ["Sil"] * 50
     f0 = [67] * 50
-    for word in words[:33]:
+    for word in words:
         if not word:
             continue
         for syl in word:
