@@ -14,7 +14,7 @@ def process_word(syls, tick):
     print ("-----------------------------------------------WORD:", "".join(syls), "PHONEMES:", phos)
     return phos
     
-def parse_karaoke_file(fmido, mname='Melody', limit=9999999):
+def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='0'):
     is_kar = False
     melody = None
     for t in fmido.tracks:
@@ -56,6 +56,9 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999):
                 if tx[0] in [' ', '/', '\\']:
                     words.append(process_word(syls, tick))
                     syls = []
+                if clean == "the":
+                    if thee == '1':
+                        clean = "thee"
                 print ("TIME:", tick, "SYLLABLE:", clean)
                 syls.append((clean, tick))
                 if tx[-1] == ' ':

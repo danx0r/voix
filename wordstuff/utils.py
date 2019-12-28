@@ -16,10 +16,7 @@ def load_pronunciation_dict():
             if i > 0:
                 word = word[:i]
             # print (word, "|", pro)
-            if word in ["the"]:
-                d[word].insert(0, pro)
-            else:
-                d[word].append(pro)
+            d[word].append(pro)
     print ("Downloaded", len(d), "pronunciations")
     return d
 
