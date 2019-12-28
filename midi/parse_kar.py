@@ -2,81 +2,15 @@ import sys, os, argparse
 import mido
 if __name__ == '__main__':
     sys.path.append("..")
-from wordstuff.utils import words2phonemes
+from wordstuff.utils import syllables2phonemes
 
-def process_word(syls, end):
-    if syls:
-        word = "".join([x[0] for x in syls])
-        beg = syls[0][1]
-        pros = words2phonemes(word)
-        if not pros:
-            word = word.replace("'", "")
-            pros = words2phonemes(word)
-        if not pros:
-            print ("WARNING -- %s no pronunciation in dictionary" % word)
-            return None
-
-        best = None
-        for ex in ["", 'r', 'y', 'w' 'ry', 'yw', 'rw', 'ryw']:
-            if ex:
-                pros = words2phonemes(word, exvowels=ex)
-                print("TRYING as vowels:", pros[0], ex)
-            for pro in pros:
-                if pro is not pros[0]:
-                    print ("TRYING alternate pronunciation:", pro)
-                if len(syls) == len(pro):
-                    best = pro
-                    print ("MATCH:", best)
-                    break
-            if best:
-                break
-
-        if not best:
-            print ("TRYING to break up the word:")
-            for i in range(1, len(word)-1):
-                w1 = word[:i]
-                w2 = word[i:]
-                print("  TRYING:", w1, w2)
-                p1 = words2phonemes(w1)
-                p2 = words2phonemes(w2)
-                if p1 and p2:
-                    for q in p1:
-                        for r in p2:
-                            poss = q + r
-                            print("  TRYING:", poss)
-                            if len(poss) == len(syls):
-                                best = poss
-                                break
-                        if best:
-                            break
-                    if best:
-                        break
-                if best:
-                    break
-            if best:
-                print ("  SUCCESS!", best)
-
-        if not best:
-            print ("TRYING last ditch, combine some syllables down to", len(syls))
-            mn = 99
-            pros = words2phonemes(word)
-            for x in pros:
-                if len(x) < mn:
-                    mn = len(x)
-                    pro = x
-            while len(pro) > 1:
-                pro = [pro[0] + pro[1]] + pro[2:]
-                print ("  TRYING", pro)
-                if len(pro) == len(syls):
-                    best = pro
-                    print("  SUCCESS!", best)
-                    break
-        if not best:
-            print("ERROR -- %s no pronunciation matches syllable count" % word)
-            0/0
-            return None
-        print("TIME:", beg, "WORD:", word, "SYLS:", len(syls), "LENGTH:", end-beg, "PRO:", best)
-        print("-------------------------------")
+def process_word(syls, tick):
+    if len(syls) == 0:
+        print ("---WARN: zero-length word encountered---")
+        return
+    syls = [x[0] for x in syls]
+    phos = syllables2phonemes(syls)
+    print ("-----------------------------------------------WORD:", "".join(syls), "PHONEMES:", phos)
 
 def parse_karaoke_file(fmido, mname='Melody'):
     is_kar = False
@@ -160,6 +94,5 @@ if __name__ == '__main__':
     par.add_argument("midifile")
     par.add_argument("--pitchtrack", default="Melody")
     args = par.parse_args()
-    print ("W2PRO:", words2phonemes("methodically"))
     f=mido.MidiFile(args.midifile)
     parse_karaoke_file(f, args.pitchtrack)
