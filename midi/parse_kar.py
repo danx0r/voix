@@ -10,9 +10,10 @@ def process_word(syls, tick):
     if len(syls) == 0:
         print ("---WARN: zero-length word encountered---")
         return
-    syls = [x[0] for x in syls]
-    phos = syllables2phonemes(syls)
-    print ("-----------------------------------------------WORD:", "".join(syls), "PHONEMES:", phos)
+    phos = syllables2phonemes([x[0] for x in syls])
+    for i in range(len(phos)):
+        phos[i] = (phos[i], syls[i][1])  #add tick to each syllable
+    print ("-----------------------------------------------WORD:", "".join([x[0] for x in syls]), "PHONEMES:", phos)
     return phos
     
 def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):

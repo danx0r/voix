@@ -34,7 +34,7 @@ if __name__ == '__main__':
         if not word:
             continue
         for syl in word:
-            for ph in syl:
+            for ph in syl[0]:
                 z = 36 if ph in config.phonemas_nus_vowels else 12
                 for i in range(z):
                     pho.append(ph)
