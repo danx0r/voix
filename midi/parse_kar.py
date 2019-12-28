@@ -56,9 +56,25 @@ def process_word(syls, end):
             if best:
                 print ("  SUCCESS!", best)
 
-            if not best:
-                print("ERROR -- %s no pronunciation matches syllable count" % word)
-                return None
+        if not best:
+            print ("TRYING last ditch, combine some syllables down to", len(syls))
+            mn = 99
+            pros = words2phonemes(word)
+            for x in pros:
+                if len(x) < mn:
+                    mn = len(x)
+                    pro = x
+            while len(pro) > 1:
+                pro = [pro[0] + pro[1]] + pro[2:]
+                print ("  TRYING", pro)
+                if len(pro) == len(syls):
+                    best = pro
+                    print("  SUCCESS!", best)
+                    break
+        if not best:
+            print("ERROR -- %s no pronunciation matches syllable count" % word)
+            0/0
+            return None
         print("TIME:", beg, "WORD:", word, "SYLS:", len(syls), "LENGTH:", end-beg, "PRO:", best)
         print("-------------------------------")
 
