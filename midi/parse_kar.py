@@ -8,12 +8,18 @@ def process_word(syls, end):
     if syls:
         word = "".join([x[0] for x in syls])
         beg = syls[0][1]
-        print("TIME:", beg, "WORD:", word, "LENGTH:", end-beg)
-        sylphs = words2phonemes(word)
-        print (len(syls), len(sylphs))
-        if len(syls) != len(sylphs):
-            print ("ERROR")
+        pros = words2phonemes(word)
+        best = None
+        for pro in pros:
+            if len(syls) == len(pro):
+                best = pro
+                break
+            else:
+                print ("TRYING...", pro)
+        if not best:
+            print ("ERROR -- no pronunciation matches syllable count")
             0/0
+        print("TIME:", beg, "WORD:", word, "LENGTH:", end-beg, "PRO:", best)
         print("-------------------------------")
 
 def parse_karaoke_file(fmido, mname='Melody'):
