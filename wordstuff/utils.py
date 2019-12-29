@@ -5,6 +5,9 @@ mypath = mypath[:mypath.rfind("/")+1]
 # print ("MYPATH:", mypath)
 
 
+dextra = {}
+dextra['libation'] = ["L AY2 B EY1 SH AH0 N".lower()]
+
 def load_pronunciation_dict():
     f=open(mypath+"cmudict-0.7b", 'rb')
     d = defaultdict(list)
@@ -18,6 +21,8 @@ def load_pronunciation_dict():
             # print (word, "|", pro)
             d[word].append(pro)
     print ("Downloaded", len(d), "pronunciations")
+    d.update(dextra)
+    print ("Added", len(dextra), "pronunciations")
     return d
 
 def words2phonemes(word, exvowels = ""):
@@ -120,7 +125,7 @@ if __name__ == '__main__':
     # par = argparse.ArgumentParser(description="test cmu dict")
     # par.add_argument("words")
     # args = par.parse_args()
-    tests = (['of'], ['ev', 'ery'], ['fi', 're', 'man'], ['hour', 'glass'], ['never'])
+    tests = (['of'], ['ev', 'ery'], ['fi', 're', 'man'], ['hour', 'glass'], ['never'], ['li', 'ba', 'tion'])
     for x in tests:
         print ("TEST:", x)
         print (syllables2phonemes(x))

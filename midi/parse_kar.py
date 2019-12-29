@@ -83,8 +83,8 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
                             prothe = "the"
                         else:
                             prothe = "thee"
-                print ("TIME:", tick * spt, "SYLLABLE:", clean)
-                syls.append((clean, tick))
+                print ("TIME:", tick, "SYLLABLE:", clean)
+                syls.append((clean, tick * spt))
                 if tx[-1] == ' ':
                     words.append(process_word(syls, tick))
                     syls = []

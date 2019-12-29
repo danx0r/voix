@@ -40,3 +40,4 @@ if __name__ == '__main__':
                     pho.append(ph)
                     f0.append(67)
     f0pho_to_wav(f0, pho, "out", 5)
+    print ("Created .wav file from %d samples" % len(pho))
