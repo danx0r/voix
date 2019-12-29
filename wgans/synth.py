@@ -53,7 +53,8 @@ def kar2wgans(f, pitchtrack="Melody", limit=9999999, thee="auto", transpose=0):
                 targ = gt + pdur
                 while gt < targ:
                     pho.append(ph)
-                    f0.append(pitch_at_time(pitches, gt+secw/2) + transpose)
+                    pit=(pitch_at_time(pitches, gt+secw/2) + transpose)
+                    f0.append(pit)
                     gt += secw
     return f0, pho
 
@@ -68,6 +69,7 @@ if __name__ == '__main__':
     par.add_argument("--singer", type=int, default=5)
     par.add_argument("--limit", type=int, default=9999999)
     par.add_argument("--transpose", type=float, default=0)
+    par.add_argument("--portamento", type=float, default=0)
     args = par.parse_args()
 
     f=mido.MidiFile(args.midifile)
