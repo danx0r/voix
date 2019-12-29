@@ -22,18 +22,8 @@ def pitch_at_time(pitches, t):       #FIXME fast binary search
             return old
         old = x[0]
 
-secw = 256/44100.
-
-if __name__ == '__main__':
-    par = argparse.ArgumentParser(description="parse Karaoke-style MIDI file for melody & lyrics")
-    par.add_argument("midifile")
-    par.add_argument("--pitchtrack", default="Melody")
-    par.add_argument("--thee", type=str, default="auto")
-    par.add_argument("--limit", type=int, default=9999999)
-    args = par.parse_args()
-
-    f=mido.MidiFile(args.midifile)
-    words, pitches = parse_karaoke_file(f, args.pitchtrack, args.limit, args.thee)
+def kar2wgans(f, pitchtrack="Melody", limit=9999999, thee="auto", transpose=0):
+    words, pitches = parse_karaoke_file(f, pitchtrack, limit, thee)
     pho = []
     f0 = []
     gt = 0
@@ -62,8 +52,24 @@ if __name__ == '__main__':
                 targ = gt + pdur
                 while gt < targ:
                     pho.append(ph)
-                    f0.append(pitch_at_time(pitches, gt+secw/2))
+                    f0.append(pitch_at_time(pitches, gt+secw/2) + transpose)
                     gt += secw
-                    
-    f0pho_to_wav(f0, pho, "out", 5)
+    return f0, pho
+
+secw = 256/44100.
+
+if __name__ == '__main__':
+    par = argparse.ArgumentParser(description="parse Karaoke-style MIDI file for melody & lyrics")
+    par.add_argument("midifile")
+    par.add_argument("--pitchtrack", default="Melody")
+    par.add_argument("--thee", type=str, default="auto")
+    par.add_argument("--singer", type=int, default=5)
+    par.add_argument("--limit", type=int, default=9999999)
+    par.add_argument("--transpose", type=float, default=0)
+    args = par.parse_args()
+
+    f=mido.MidiFile(args.midifile)
+    f0, pho = kar2wgans(f, args.pitchtrack, args.limit, args.thee, args.transpose)
+    f0pho_to_wav(f0, pho, "out", args.singer)
+    
     print ("Created .wav file from %d samples" % len(pho))
