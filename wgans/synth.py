@@ -30,13 +30,26 @@ if __name__ == '__main__':
     words, pitches = parse_karaoke_file(f, args.pitchtrack, args.limit, args.thee)
     pho = ["Sil"] * 50
     f0 = [67] * 50
-    for word in words:
+    for i in range(len(words)):
+        word = words[i]
         if not word:
             continue
-        for syl in word:
+        for j in range(len(word)):
+            syl = word[j]
+            t = syl[1]
+            if j < len(word)-1:
+                next = word[j+1][1]
+            elif i < len(words)-1:
+                next = words[i+1][0][1]
+#                 print ("A", i, j, next)
+            else:
+                next = t+1
+            dur = next-t
+            dur = min(dur, 1)
+            print ("PUSH SYL:", syl, "DURATION:", dur, "NEXT:", next)
             for ph in syl[0]:
                 z = 36 if ph in config.phonemas_nus_vowels else 12
-                for i in range(z):
+                for ii in range(z):
                     pho.append(ph)
                     f0.append(67)
     f0pho_to_wav(f0, pho, "out", 5)
