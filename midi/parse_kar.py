@@ -58,8 +58,6 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
     thi = 0
     prothe = "the" if thee[0]=='0' else "thee"
     for syl in lyrics[:limit]:
-        print ("DEEBG", syl)
-        # continue
         if hasattr(syl, 'time'):
             tick += syl.time
         if syl.type == "text":
@@ -128,6 +126,8 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
             pitch = note + pw
             print ("TIME:", tick, "PITCH", pitch, ev)
 
+    while None in words:
+        words.remove(None)
     return words, pitches
             
 if __name__ == '__main__':
