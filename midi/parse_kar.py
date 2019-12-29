@@ -37,14 +37,14 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
         return
     
     tempo = None
-    for tk in f.tracks:
+    for tk in fmido.tracks:
         for msg in tk:
             if msg.type == 'set_tempo':
                 if tempo and tempo != msg.tempo:
                     print ("ERROR: no support for tempo changes")
                     return
                 tempo = msg.tempo             #FIXME: tempo can change
-    tpb = f.ticks_per_beat
+    tpb = fmido.ticks_per_beat
     bpm = mido.tempo2bpm(tempo)
     bps = bpm/60.
     tps = bps * tpb
