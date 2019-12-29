@@ -92,10 +92,10 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
     
     if thee == "auto":
         for i in range(len(words)-1):
-            if words[i] == [['dh', 'ah']]:
-                if words[i+1][0][0] in vowels:
+            if words[i] and words[i][0][0] == ['dh', 'ah']:
+                if words[i+1][0][0][0] in vowels:
                     print ("DEBUG the --> thee", i)
-                    words[i][0][1] = 'iy'
+                    words[i][0][0][1] = 'iy'
 
     print ("======================================================")
     tick = 0
@@ -133,7 +133,7 @@ if __name__ == '__main__':
     par = argparse.ArgumentParser(description="parse Karaoke-style MIDI file for melody & lyrics")
     par.add_argument("midifile")
     par.add_argument("--pitchtrack", default="Melody")
-    par.add_argument("--thee", type=str, default="0")
+    par.add_argument("--thee", type=str, default="auto")
     par.add_argument("--limit", type=int, default=9999999)
     args = par.parse_args()
     f=mido.MidiFile(args.midifile)
