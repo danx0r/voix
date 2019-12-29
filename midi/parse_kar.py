@@ -35,6 +35,21 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
         for x in fmido.tracks:
             print (x.name)
         return
+    
+    tempo = None
+    for tk in f.tracks:
+        for msg in tk:
+            if msg.type == 'set_tempo':
+                if tempo and tempo != msg.tempo:
+                    print ("ERROR: no support for tempo changes")
+                    return
+                tempo = msg.tempo             #FIXME: tempo can change
+    tpb = f.ticks_per_beat
+    bpm = mido.tempo2bpm(tempo)
+    bps = bpm/60.
+    tps = bps * tpb
+    spt = 1/tps
+    print ("BPM:", bpm, "ticks per beat:", tpb, "seconds per tick:", spt, "ticks per second:", tps)
 
     print ("Pitch track:", melody)
     tick = 0
@@ -68,7 +83,7 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
                             prothe = "the"
                         else:
                             prothe = "thee"
-                print ("TIME:", tick, "SYLLABLE:", clean)
+                print ("TIME:", tick * spt, "SYLLABLE:", clean)
                 syls.append((clean, tick))
                 if tx[-1] == ' ':
                     words.append(process_word(syls, tick))
