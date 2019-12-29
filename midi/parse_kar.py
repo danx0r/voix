@@ -103,7 +103,7 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
     pw = 0
 
     pitches = []
-    for ev in melody[:0]:
+    for ev in melody:
         # print (ev)
         # continue
         if hasattr(ev, 'time'):
@@ -120,10 +120,12 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
         if ev.type == "note_on" and ev.velocity > 0:
             note = ev.note
             pitch = note + pw
+            pitches.append((pitch, tick * spt))
             print ("TIME:", tick, "NOTE ", pitch, ev)
         if ev.type == "pitchwheel":
             pw = (ev.pitch / 0x3fff) * pwsen
             pitch = note + pw
+            pitches.append((pitch, tick * spt))
             print ("TIME:", tick, "PITCH", pitch, ev)
 
     while None in words:

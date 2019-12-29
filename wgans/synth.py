@@ -15,6 +15,13 @@ def f0pho_to_wav(f0, pho, fn, singdex):
     model = models.WGANSing()
     model.eval_f0pho(f0, pho, fn, singdex)
 
+def pitch_at_time(pitches, t):       #FIXME fast binary search
+    old = 60
+    for x in pitches:
+        if x[1] > t:
+            return old
+        old = x[0]
+
 secw = 256/44100.
 
 if __name__ == '__main__':
@@ -55,7 +62,7 @@ if __name__ == '__main__':
                 targ = gt + pdur
                 while gt < targ:
                     pho.append(ph)
-                    f0.append(67)
+                    f0.append(pitch_at_time(pitches, gt+secw/2))
                     gt += secw
                     
     f0pho_to_wav(f0, pho, "out", 5)
