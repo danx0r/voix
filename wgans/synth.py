@@ -21,6 +21,7 @@ def pitch_at_time(pitches, t):       #FIXME fast binary search
         if x[1] > t:
             return old
         old = x[0]
+    return old
 
 def kar2wgans(f, pitchtrack="Melody", limit=9999999, thee="auto", transpose=0):
     words, pitches = parse_karaoke_file(f, pitchtrack, limit, thee)
