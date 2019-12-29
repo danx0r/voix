@@ -61,6 +61,7 @@ secw = 256/44100.
 if __name__ == '__main__':
     par = argparse.ArgumentParser(description="parse Karaoke-style MIDI file for melody & lyrics")
     par.add_argument("midifile")
+    par.add_argument("--wavfile", default="out")
     par.add_argument("--pitchtrack", default="Melody")
     par.add_argument("--thee", type=str, default="auto")
     par.add_argument("--singer", type=int, default=5)
@@ -70,6 +71,6 @@ if __name__ == '__main__':
 
     f=mido.MidiFile(args.midifile)
     f0, pho = kar2wgans(f, args.pitchtrack, args.limit, args.thee, args.transpose)
-    f0pho_to_wav(f0, pho, "out", args.singer)
+    f0pho_to_wav(f0, pho, args.wavfile, args.singer)
     
     print ("Created .wav file from %d samples" % len(pho))
