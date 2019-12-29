@@ -58,7 +58,7 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
     thi = 0
     prothe = "the" if thee[0]=='0' else "thee"
     for syl in lyrics[:limit]:
-        # print (syl)
+        print ("DEEBG", syl)
         # continue
         if hasattr(syl, 'time'):
             tick += syl.time
@@ -68,6 +68,7 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
             if tx[0:1] == '@':
                 print ("INFO:", tx)
             else:
+                tx = tx.replace(",", " ")
                 clean = ""
                 for c in tx:
                     if c.isalpha() or c == "'":
