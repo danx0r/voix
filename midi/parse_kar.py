@@ -24,7 +24,7 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
             lyrics = t
         if t.name==mname:
             melody = t
-        if t.name == "Soft Karaoke":
+        if t.name.lower() == "soft karaoke":
             is_kar = True
     if not is_kar:
         print ("Not a standard .kar file")
