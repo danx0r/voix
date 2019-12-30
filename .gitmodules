@@ -4,3 +4,7 @@
 [submodule "wgans/training"]
 	path = wgans/data/training
 	url = hub@eye0.com:wganss/data/training
+[submodule "prepped"]
+        path = wgans/data/prepped
+        url = hub@eye0.com:wganss/data/prepped
+
