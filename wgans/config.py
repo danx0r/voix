@@ -3,7 +3,7 @@ import tensorflow as tf
 
 
 wav_dir_nus = './data/training/nus-smc-corpus_48/'
-voice_dir = './data/voices/'
+voice_dir = './data/prepped/voices/'
 log_dir = './data/models/'
 data_log = './log/data_log.log'
 stat_dir = './stats/'
@@ -47,7 +47,7 @@ phonemas_nus_vowels = ['aa', 'ae', 'ah', 'ey', 'uw', 'iy', 'ay', 'ao', 'ih', 'eh
 num_phos = len(phonemas_nus)
 
 singers = ['ADIZ', 'JLEE', 'JTAN', 'KENN', 'MCUR', 'MPOL', 'MPUR', 'NJAT', 'PMAR', 'SAMF', 'VKOW' ,'DANX']
-singers_prep = ['MCUR']
+singers_prep = singers
 
 num_singers = len(singers)
 
