@@ -1,4 +1,3 @@
 .ipynb_checkpoints
 __pycache__
-wgans/data/tests
 wgans/val_dir_synth

@@ -7,3 +7,6 @@
 [submodule "wgans/data/prepped"]
 	path = wgans/data/prepped
 	url = hub@eye0.com:wganss/data/prepped
+[submodule "wgans/data/tests"]
+	path = wgans/data/tests
+	url = hub@eye0.com:wganss/data/tests
