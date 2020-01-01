@@ -3,7 +3,7 @@ import tensorflow as tf
 
 
 wav_dir_nus = './data/training/nus-smc-corpus_48/'
-voice_dir = './data/prepped/voices/'
+voice_dir = './data/prepped/voices/nus_48/'
 log_dir = './data/models/'
 data_log = './log/data_log.log'
 stat_dir = './stats/'
