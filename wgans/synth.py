@@ -78,4 +78,4 @@ if __name__ == '__main__':
     f0, pho = kar2wgans(f, args.pitchtrack, args.limit, args.thee, args.transpose, args.portamento)
     f0pho_to_wav(f0, pho, args.wavfile, args.singer)
     
-    print ("Created .wav file from %d samples" % len(pho))
+    print ("Created .wav file from %d samples for singer %s" % (len(pho), config.singers[args.singer]) )
