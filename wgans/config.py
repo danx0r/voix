@@ -46,8 +46,8 @@ phonemas_nus_vowels = ['aa', 'ae', 'ah', 'ey', 'uw', 'iy', 'ay', 'ao', 'ih', 'eh
 
 num_phos = len(phonemas_nus)
 
-singers = ['ADIZ', 'JLEE', 'JTAN', 'KENN', 'MCUR', 'MPOL', 'MPUR', 'NJAT', 'PMAR', 'SAMF', 'VKOW', 'ZHIY']
-#singers = ['DANX', 'ADIZ', 'JLEE', 'JTAN', 'KENN', 'MCUR', 'MPOL', 'MPUR', 'NJAT', 'PMAR', 'SAMF', 'VKOW']
+#singers = ['ADIZ', 'JLEE', 'JTAN', 'KENN', 'MCUR', 'MPOL', 'MPUR', 'NJAT', 'PMAR', 'SAMF', 'VKOW', 'ZHIY']
+singers = ['DANX', 'ADIZ', 'JLEE', 'JTAN', 'KENN', 'MCUR', 'MPOL', 'MPUR', 'NJAT', 'PMAR', 'SAMF', 'VKOW']
 singers_prep = ['DANX'] #singers
 
 num_singers = len(singers)
