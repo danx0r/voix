@@ -16,25 +16,22 @@ def process_word(syls, tick):
     print ("-----------------------------------------------WORD:", "".join([x[0] for x in syls]), "PHONEMES:", phos)
     return phos
     
-def parse_karaoke_file(fmido, mname='Melody', lyname="Words", miditype="SoftKaraoke", limit=9999999, thee='auto'):
-    is_kar = False
+def parse_karaoke_file(fmido, mname='Melody', lyname="Words", miditype="rosegarden", limit=9999999, thee='auto'):
     melody = None
+
     for t in fmido.tracks:
         if t.name==lyname:
             lyrics = t
         if t.name==mname:
             melody = t
         if t.name.lower() == "soft karaoke":
-            is_kar = True
-    if not is_kar and miditype=="SoftKaraoke":
-        print ("Not a standard .kar (SoftKaraoke) file")
-        return
-
-    if not melody:
-        print ("Pitch track not found. Candidates are:")
+            miditype = "SoftKaraoke"
+    print ("miditype:", miditype)
+    if not melody or not lyrics:
+        print ("melody &/or lyric tracks not found. Candidates are:")
         for x in fmido.tracks:
             print (x.name)
-        return
+        return [], []
     
     tempo = None
     for tk in fmido.tracks:
@@ -157,7 +154,7 @@ if __name__ == '__main__':
     par.add_argument("midifile")
     par.add_argument("--pitchtrack", default="Melody")
     par.add_argument("--lyrictrack", default="Words")
-    par.add_argument("--miditype", default="SoftKaraoke")
+    par.add_argument("--miditype", default="rosegarden")
     par.add_argument("--thee", type=str, default="auto")
     par.add_argument("--limit", type=int, default=9999999)
     args = par.parse_args()
