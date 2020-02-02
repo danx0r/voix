@@ -7,6 +7,7 @@ mypath = mypath[:mypath.rfind("/")+1]
 
 dextra = {}
 dextra['libation'] = ["L AY2 B EY1 SH AH0 N".lower()]
+dextra['unwhole'] = ["AH N HH OW L".lower()]
 
 def load_pronunciation_dict():
     f=open(mypath+"cmudict-0.7b", 'rb')

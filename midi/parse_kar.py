@@ -16,18 +16,18 @@ def process_word(syls, tick):
     print ("-----------------------------------------------WORD:", "".join([x[0] for x in syls]), "PHONEMES:", phos)
     return phos
     
-def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
+def parse_karaoke_file(fmido, mname='Melody', lyname="Words", miditype="SoftKaraoke", limit=9999999, thee='auto'):
     is_kar = False
     melody = None
     for t in fmido.tracks:
-        if t.name=="Words":
+        if t.name==lyname:
             lyrics = t
         if t.name==mname:
             melody = t
         if t.name.lower() == "soft karaoke":
             is_kar = True
-    if not is_kar:
-        print ("Not a standard .kar file")
+    if not is_kar and miditype=="SoftKaraoke":
+        print ("Not a standard .kar (SoftKaraoke) file")
         return
 
     if not melody:
@@ -60,33 +60,53 @@ def parse_karaoke_file(fmido, mname='Melody', limit=9999999, thee='auto'):
     for syl in lyrics[:limit]:
         if hasattr(syl, 'time'):
             tick += syl.time
-        if syl.type == "text":
-            # print ("DEBUG", syl)
-            tx = syl.text
-            if tx[0:1] == '@':
-                print ("INFO:", tx)
-            else:
-                tx = tx.replace(",", " ")
-                clean = ""
-                for c in tx:
-                    if c.isalpha() or c == "'":
-                        clean += c.lower()
-                if tx[0] in [' ', '/', '\\']:
-                    words.append(process_word(syls, tick))
-                    syls = []
-                if clean == "the" and thee != "auto":
-                    clean = prothe
-                    thi += 1
-                    if thi < len(thee):
-                        if thee[thi] == '0':
-                            prothe = "the"
-                        else:
-                            prothe = "thee"
-                print ("TIME:", tick, "SYLLABLE:", clean)
-                syls.append((clean, tick * spt))
-                if tx[-1] == ' ':
-                    words.append(process_word(syls, tick))
-                    syls = []
+        if miditype == "SoftKaraoke":
+            if syl.type == "text":
+                # print ("DEBUG", syl)
+                tx = syl.text
+                if tx[0:1] == '@':
+                    print ("INFO:", tx)
+                else:
+                    tx = tx.replace(",", " ")
+                    clean = ""
+                    for c in tx:
+                        if c.isalpha() or c == "'":
+                            clean += c.lower()
+                    if tx[0] in [' ', '/', '\\']:
+                        words.append(process_word(syls, tick))
+                        syls = []
+                    if clean == "the" and thee != "auto":
+                        clean = prothe
+                        thi += 1
+                        if thi < len(thee):
+                            if thee[thi] == '0':
+                                prothe = "the"
+                            else:
+                                prothe = "thee"
+                    print ("TIME:", tick, "SYLLABLE:", clean)
+                    syls.append((clean, tick * spt))
+                    if tx[-1] == ' ':
+                        words.append(process_word(syls, tick))
+                        syls = []
+        elif miditype == "rosegarden":
+            if syl.type == "lyrics":
+                # print ("DEBUG", syl)
+                tx = syl.text
+                if tx[0:1] == '@':
+                    print ("INFO:", tx)
+                else:
+                    clean = ""
+                    for c in tx:
+                        if c.isalpha() or c == "'":
+                            clean += c.lower()
+                    print ("TIME:", tick, "SYLLABLE:", clean)
+                    syls.append((clean, tick * spt))
+                    if tx[-1] != "-":
+                        words.append(process_word(syls, tick))
+                        syls = []
+        else:
+            print ("unknown miditype:", miditype)
+            return
     words.append(process_word(syls, tick))
     
     if thee == "auto":
@@ -136,9 +156,11 @@ if __name__ == '__main__':
     par = argparse.ArgumentParser(description="parse Karaoke-style MIDI file for melody & lyrics")
     par.add_argument("midifile")
     par.add_argument("--pitchtrack", default="Melody")
+    par.add_argument("--lyrictrack", default="Words")
+    par.add_argument("--miditype", default="SoftKaraoke")
     par.add_argument("--thee", type=str, default="auto")
     par.add_argument("--limit", type=int, default=9999999)
     args = par.parse_args()
     f=mido.MidiFile(args.midifile)
-    pho, f0 = parse_karaoke_file(f, args.pitchtrack, args.limit, args.thee)
+    pho, f0 = parse_karaoke_file(f, args.pitchtrack, args.lyrictrack, args.miditype, args.limit, args.thee)
     print(pho[:22])
