@@ -23,8 +23,8 @@ def pitch_at_time(pitches, t):       #FIXME fast binary search
         old = x[0]
     return old
 
-def kar2wgans(f, pitchtrack="Melody", limit=9999999, thee="auto", transpose=0, portamento=0):
-    words, pitches = parse_karaoke_file(f, pitchtrack, limit, thee)
+def kar2wgans(f, pitchtrack="Melody", lyrictrack="Words", limit=9999999, thee="auto", transpose=0, portamento=0):
+    words, pitches = parse_karaoke_file(f, pitchtrack, lyrictrack, limit=limit)
     pho = []
     f0 = []
     gt = 0
@@ -67,6 +67,7 @@ if __name__ == '__main__':
     par.add_argument("midifile")
     par.add_argument("--wavfile", default="out")
     par.add_argument("--pitchtrack", default="Melody")
+    par.add_argument("--lyrictrack", default="Words")
     par.add_argument("--thee", type=str, default="auto")
     par.add_argument("--singer", type=int, default=5)
     par.add_argument("--limit", type=int, default=9999999)
@@ -75,7 +76,7 @@ if __name__ == '__main__':
     args = par.parse_args()
 
     f=mido.MidiFile(args.midifile)
-    f0, pho = kar2wgans(f, args.pitchtrack, args.limit, args.thee, args.transpose, args.portamento)
+    f0, pho = kar2wgans(f, args.pitchtrack, args.lyrictrack, args.limit, args.thee, args.transpose, args.portamento)
     f0pho_to_wav(f0, pho, args.wavfile, args.singer)
     
     print ("Created .wav file from %d samples" % len(pho))

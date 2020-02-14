@@ -1,10 +1,10 @@
 import numpy as np
 import tensorflow as tf
-import voix_wgans_pre950
+import voix_wgans_3000 as voix_wgans_model
 
 wav_dir_nus = './data/training/nus-smc-corpus_48/'
 voice_dir = './data/voices/'
-log_dir = voix_wgans_pre950.datapath()
+log_dir = voix_wgans_model.datapath()
 data_log = './log/data_log.log'
 stat_dir = './stats/'
 val_dir = './val_dir_synth/'

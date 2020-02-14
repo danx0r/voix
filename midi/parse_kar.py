@@ -17,7 +17,7 @@ def process_word(syls, tick):
     return phos
     
 def parse_karaoke_file(fmido, mname='Melody', lyname="Words", miditype="rosegarden", limit=9999999, thee='auto'):
-    melody = None
+    melody = lyrics = None
 
     for t in fmido.tracks:
         if t.name==lyname:
