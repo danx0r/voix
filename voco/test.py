@@ -8,7 +8,7 @@ if __name__ == '__main__':
     par = argparse.ArgumentParser(description="test vocoder encode/decode")
     par.add_argument("--infile", default="test.wav")
     par.add_argument("--outfile", default="out.wav")
-    par.add_argument("--samplerate", default=22050)
+    par.add_argument("--samplerate", type=int, default=22050)
     args = par.parse_args()
 
     x = librosa.load(args.infile)[0].astype(numpy.double)           #converts to 22050 unless sr=xxx
