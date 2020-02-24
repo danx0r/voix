@@ -11,7 +11,7 @@ if __name__ == '__main__':
     par.add_argument("--samplerate", type=int, default=22050)
     args = par.parse_args()
 
-    x = librosa.load(args.infile)[0].astype(numpy.double)           #converts to 22050 unless sr=xxx
+    x = librosa.load(args.infile, sr=args.samplerate)[0].astype(numpy.double)           #converts to 22050 unless sr=xxx
     f0, sp, ap = pyworld.wav2world(x, args.samplerate)
     y = pyworld.synthesize(f0, sp, ap, args.samplerate)
     soundfile.write(args.outfile, y, args.samplerate)
