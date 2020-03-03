@@ -9,7 +9,7 @@ if __name__ == '__main__':
     par.add_argument("--infile", default="test.wav")
     par.add_argument("--outfile", default="out.wav")
     par.add_argument("--samplerate", type=int, default=22050)
-    par.add_argument("--transpose", type=int, default=0)
+    par.add_argument("--transpose", type=float, default=0)
     args = par.parse_args()
 
     x = librosa.load(args.infile, sr=args.samplerate)[0].astype(numpy.double)           #converts to 22050 unless sr=xxx
